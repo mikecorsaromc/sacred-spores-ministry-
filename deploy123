@@ -1,0 +1,30 @@
+# Deploy static site to GitHub Pages on push to branch 'open'
+on:
+  push:
+    branches: [ "open" ]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Upload artifact for GitHub Pages
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: |
+            .
+          # If you have a build step, replace the path with your build output directory (e.g., build/, public/)
+
+  deploy:
+    needs: build-and-deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v1
